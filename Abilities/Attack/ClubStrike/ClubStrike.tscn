@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Abilities/Attack/Attack.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Abilities/Attack/ClubStrike/Club.png" type="Texture" id=2]
+
+[node name="Attack" instance=ExtResource( 1 )]
+TYPE = "strike"
+ANGLE_START_DEG = 0
+ANGLE_END_DEG = 0
+PITCH_START_DEG = 60
+PITCH_END_DEG = -20
+
+[node name="Sprite" parent="Center/Anchor/Offset/Scalar" index="0"]
+position = Vector2( 128, 5.96046e-08 )
+rotation = 1.5708
+scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 2 )

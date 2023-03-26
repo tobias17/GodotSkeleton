@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Enemies/EnemyTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Player/Monk.png" type="Texture" id=2]
+[ext_resource path="res://Player/Player.gd" type="Script" id=3]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 20.0
+
+[node name="Player" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="Sprite" parent="YSort/SpriteContainer" index="0"]
+position = Vector2( -2, -79 )
+scale = Vector2( 0.336, 0.336 )
+texture = ExtResource( 2 )
+
+[node name="CharacterBox" parent="." index="1"]
+position = Vector2( 0, -80 )
+collision_mask = 256
+
+[node name="Collision" parent="CharacterBox" index="0"]
+position = Vector2( 0, 80 )
+
+[node name="AttackOffset" parent="." index="2"]
+position = Vector2( 0, -109 )
+
+[node name="Health" parent="." index="3"]
+position = Vector2( 0, -183 )
+
+[node name="Collision" parent="." index="4"]
+shape = SubResource( 1 )

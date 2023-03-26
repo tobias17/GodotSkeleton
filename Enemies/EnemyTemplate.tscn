@@ -1,0 +1,129 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Utils/CharacterBox/CharacterBox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Enemies/AI/RootAI.gd" type="Script" id=2]
+[ext_resource path="res://Utils/HealthManager/HealthManager.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 20.0
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("YSort/SpriteContainer:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("YSort/SpriteContainer/Sprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=1]
+resource_name = "death"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("YSort/SpriteContainer:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4 ),
+"transitions": PoolRealArray( 1.68179, 1 ),
+"update": 0,
+"values": [ 0.0, 90.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("YSort/SpriteContainer/Sprite:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("YSort/SpriteContainer/Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "hit"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("YSort/SpriteContainer/Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 3, 1 ),
+"update": 0,
+"values": [ Color( 1, 0.721569, 0.721569, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Enemy" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="YSort" type="YSort" parent="."]
+
+[node name="SpriteContainer" type="Node2D" parent="YSort"]
+
+[node name="Sprite" type="Sprite" parent="YSort/SpriteContainer"]
+
+[node name="CharacterBox" parent="." instance=ExtResource( 1 )]
+collision_mask = 2048
+
+[node name="Collision" type="CollisionShape2D" parent="CharacterBox"]
+shape = SubResource( 5 )
+
+[node name="AttackOffset" type="Node2D" parent="."]
+
+[node name="Health" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, -175 )
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+shape = SubResource( 5 )
+
+[node name="DeathPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 2 )
+anims/death = SubResource( 1 )
+
+[node name="HitPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/hit = SubResource( 4 )
+
+[connection signal="area_entered" from="CharacterBox" to="." method="_on_CharacterBox_area_entered"]
+[connection signal="no_health" from="Health" to="." method="_on_Health_no_health"]
+[connection signal="animation_finished" from="DeathPlayer" to="." method="_on_DeathPlayer_animation_finished"]
